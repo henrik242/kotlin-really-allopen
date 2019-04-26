@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.3.31"
-    id("org.jetbrains.kotlin.kapt") version "1.3.31"
+    kotlin("jvm")
+    id("org.jetbrains.kotlin.kapt")
     `maven-publish`
 }
 
