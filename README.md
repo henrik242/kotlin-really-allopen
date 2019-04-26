@@ -9,16 +9,10 @@ in that you don't have to specify which classes to open up.
 NB! Work in progress!
 ---------------------
 
-This somehow doesn't work yet.  Steps to reproduce:
+1) Comment the classpath and plugin for `really-allopen` in example/build.gradle.kts before building the
+first time.
 
-1) `./gradlew :plugin:build :plugin:publishToMavenLocal`
-
-2) Uncomment either of the `apply` lines in `example/build.gradle.kts`
-
-3) `./gradlew :example:build -s`
-
-4) BAM! Build fails with 
-   `org.gradle.api.plugins.UnknownPluginException: Plugin with id 'kotlin-really-allopen' not found.`
+2) Functions are still not opened 
     
 Credits
 -------

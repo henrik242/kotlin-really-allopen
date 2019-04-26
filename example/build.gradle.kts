@@ -8,17 +8,20 @@ buildscript {
     }
 }
 
+repositories {
+    mavenLocal()
+}
+
 plugins {
     kotlin("jvm")
     groovy
 }
-// AAAARGH this fails
-//apply(plugin = "kotlin-really-allopen")
-
-// AAAARGH this fails too
-//apply(plugin = "no.synth.kotlin.plugins.kotlin-really-allopen")
+apply(plugin = "kotlin-really-allopen")
 
 dependencies {
+    implementation(project(":plugin"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.31")
+
+    testImplementation("net.bytebuddy:byte-buddy:1.9.12")
     testImplementation("org.spockframework:spock-core:1.3-groovy-2.5")
 }

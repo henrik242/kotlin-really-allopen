@@ -1,6 +1,9 @@
 package no.synth.kotlin.plugins.reallyallopen
 
 import com.google.auto.service.AutoService
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.tasks.compile.AbstractCompile
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
 import org.jetbrains.kotlin.compiler.plugin.CliOption
@@ -14,9 +17,59 @@ import org.jetbrains.kotlin.descriptors.Modality.FINAL
 import org.jetbrains.kotlin.descriptors.Modality.OPEN
 import org.jetbrains.kotlin.extensions.DeclarationAttributeAltererExtension
 import org.jetbrains.kotlin.extensions.DeclarationAttributeAltererExtension.Companion.registerExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonOptions
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
+import org.jetbrains.kotlin.gradle.plugin.KotlinGradleSubplugin
+import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
+import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 import org.jetbrains.kotlin.lexer.KtTokens.FINAL_KEYWORD
 import org.jetbrains.kotlin.psi.KtModifierListOwner
 import org.jetbrains.kotlin.resolve.BindingContext
+
+const val groupId = "no.synth.kotlin.plugins"
+const val artifactId = "kotlin-really-allopen"
+const val version = "0.1-SNAPSHOT"
+
+open class ReallyAllOpenGradlePlugin : Plugin<Project> {
+
+    var enabled = true
+
+    override fun apply(project: Project) {
+        project.extensions.create(artifactId, this::class.java)
+    }
+}
+
+@AutoService(KotlinGradleSubplugin::class)
+class ReallyAllOpenGradleSubplugin : KotlinGradleSubplugin<AbstractCompile> {
+    override fun apply(
+            project: Project,
+            kotlinCompile: AbstractCompile,
+            javaCompile: AbstractCompile?,
+            variantData: Any?,
+            androidProjectHandler: Any?,
+            kotlinCompilation: KotlinCompilation<KotlinCommonOptions>?
+    ): List<SubpluginOption> {
+
+        val extension = project.extensions
+                .findByType(ReallyAllOpenGradlePlugin::class.java)
+                ?: ReallyAllOpenGradlePlugin()
+
+        val enabledOption = SubpluginOption(key = "enabled", value = extension.enabled.toString())
+        return listOf(enabledOption)
+    }
+
+    override fun isApplicable(project: Project, task: AbstractCompile) =
+            project.plugins.hasPlugin(ReallyAllOpenGradlePlugin::class.java)
+
+    // Needs to match the key for CommandLineProcessor.pluginId
+    override fun getCompilerPluginId(): String = artifactId
+
+    override fun getPluginArtifact(): SubpluginArtifact = SubpluginArtifact(
+            groupId = groupId,
+            artifactId = artifactId,
+            version = version
+    )
+}
 
 @AutoService(ComponentRegistrar::class)
 class ReallyAllOpenRegistrar : ComponentRegistrar {
@@ -36,6 +89,7 @@ class ReallyAllOpenExtension : DeclarationAttributeAltererExtension {
             bindingContext: BindingContext,
             isImplicitModality: Boolean
     ): Modality? =
+
             if (currentModality != FINAL) {
                 null
             } else if (!isImplicitModality && modifierListOwner.hasModifier(FINAL_KEYWORD)) {
@@ -48,12 +102,14 @@ class ReallyAllOpenExtension : DeclarationAttributeAltererExtension {
 @AutoService(CommandLineProcessor::class)
 class ReallyAllOpenCommandLineProcessor : CommandLineProcessor {
 
-    override val pluginId: String = "no.synth.kotlin.plugins.kotlin-really-allopen"
+    override val pluginId: String = artifactId
 
     override val pluginOptions: Collection<CliOption> = listOf(
             CliOption(
-                    optionName = "enabled", valueDescription = "<true|false>",
-                    description = "whether to enable the plugin or not"
+                    optionName = "enabled",
+                    valueDescription = "<true|false>",
+                    description = "whether to enable the plugin or not",
+                    required = false
             )
     )
 
