@@ -1,20 +1,22 @@
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath("no.synth.kotlin.plugins:kotlin-really-allopen:0.1-SNAPSHOT")
+    }
+}
+
 repositories {
     mavenLocal()
 }
-gradle.settingsEvaluated {
-     settings.pluginManagement {
-         repositories {
-             mavenLocal()
-             gradlePluginPortal()
-             jcenter()
-         }
-     }
- }
+
 plugins {
     kotlin("jvm")
     groovy
-    id("kotlin-really-allopen") version "0.1-SNAPSHOT"
 }
+apply(plugin = "kotlin-really-allopen")
 
 dependencies {
     implementation(project(":plugin"))
