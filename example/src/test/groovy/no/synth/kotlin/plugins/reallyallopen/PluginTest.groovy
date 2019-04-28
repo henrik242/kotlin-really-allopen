@@ -16,11 +16,9 @@ class PluginTest extends Specification {
     def "final function should be open"() {
       when:
         def mockedClass = Mock(SomeFinalClass)
-        mockedClass.someFinalMethod() >> "notcheese"
+        1 * mockedClass.someFinalMethod() >> "mock cheese"
 
       then:
-        notThrown(CannotCreateMockException)
-        mockedClass.someFinalMethod() == "cheese"
+        mockedClass.someFinalMethod() == "mock cheese"
     }
-
 }
