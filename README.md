@@ -16,7 +16,7 @@ Building
 Testing
 -------
 
-`./gradlew :kotlin-really-allopen:build :kotlin-really-allopen:publishToMavenLocal :example:build`
+`./gradlew :kotlin-really-allopen:build :kotlin-really-allopen:publishToMavenLocal :functional-test:build`
 
 Credits
 -------

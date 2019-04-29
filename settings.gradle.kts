@@ -1,6 +1,6 @@
 rootProject.name = "kotlin-really-allopen-root"
 
 include(":kotlin-really-allopen")
-include(":example")
+include(":functional-test")
 
 project(":kotlin-really-allopen").projectDir = File("plugin")
