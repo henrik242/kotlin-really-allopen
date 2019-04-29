@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.3.31"
     kotlin("kapt") version "1.3.31"
+    id("com.gradle.plugin-publish") version "0.10.1"
     `maven-publish`
     `java-gradle-plugin`
     groovy
@@ -27,10 +28,18 @@ dependencies {
 gradlePlugin {
     plugins {
         create(project.name) {
+            displayName = "Kotlin Really All Open compiler plugin"
+            description = "Removes final restriction from all Kotlin classes"
             id = "${project.group}.${project.name}"
             implementationClass = "no.synth.kotlin.plugins.reallyallopen.ReallyAllOpenGradlePlugin"
         }
     }
+}
+
+pluginBundle {
+    website = "https://github.com/henrik242/kotlin-really-allopen"
+    vcsUrl = "https://github.com/henrik242/kotlin-really-allopen.git"
+    tags = listOf("kotlin")
 }
 
 publishing {
