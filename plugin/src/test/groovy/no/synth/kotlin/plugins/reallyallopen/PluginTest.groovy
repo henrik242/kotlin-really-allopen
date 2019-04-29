@@ -4,6 +4,7 @@ import spock.lang.Specification
 
 class PluginTest extends Specification {
 
+    // Doesn't work from IntelliJ (yet)
     def "parses version"() {
       expect:
         ReallyAllOpenPluginKt.groupId != null
