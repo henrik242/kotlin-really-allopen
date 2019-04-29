@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/henrik242/kotlin-really-allopen.svg?branch=master)](https://travis-ci.org/henrik242/kotlin-really-allopen)
+
 kotlin-really-allopen
 =====================
 
