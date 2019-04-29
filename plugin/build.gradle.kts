@@ -5,6 +5,7 @@ plugins {
     kotlin("kapt") version "1.3.31"
     `maven-publish`
     `java-gradle-plugin`
+    groovy
 }
 
 group = "no.synth.kotlin.plugins"
@@ -20,6 +21,9 @@ dependencies {
 
     implementation("com.google.auto.service:auto-service:1.0-rc5")
     kapt("com.google.auto.service:auto-service:1.0-rc5")
+
+    testImplementation("net.bytebuddy:byte-buddy:1.9.12")
+    testImplementation("org.spockframework:spock-core:1.3-groovy-2.5")
 }
 
 gradlePlugin {
@@ -45,4 +49,21 @@ tasks.withType<KotlinCompile> {
 
 kapt {
     includeCompileClasspath = false
+}
+
+tasks.register("createBuildInfo") {
+    doLast {
+        File("$buildDir/resources/main").also {
+            it.mkdirs()
+            File(it, "/build.properties").writeText("""
+                groupId=${project.group}
+                artifactId=${project.name}
+                version=${project.version}
+            """.trimIndent())
+        }
+    }
+}
+
+tasks.named("assemble") {
+    dependsOn("createBuildInfo")
 }
