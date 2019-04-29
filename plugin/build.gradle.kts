@@ -11,8 +11,6 @@ plugins {
 group = "no.synth.kotlin.plugins"
 version = "0.1-SNAPSHOT"
 
-val artifactName = "kotlin-really-allopen"
-
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin-model")
@@ -28,8 +26,8 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        create(artifactName) {
-            id = artifactName
+        create(project.name) {
+            id = "${project.group}.${project.name}"
             implementationClass = "no.synth.kotlin.plugins.reallyallopen.ReallyAllOpenGradlePlugin"
         }
     }

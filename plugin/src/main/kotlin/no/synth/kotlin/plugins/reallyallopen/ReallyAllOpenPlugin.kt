@@ -59,7 +59,7 @@ class ReallyAllOpenGradleSubplugin : KotlinGradleSubplugin<AbstractCompile> {
             project.plugins.hasPlugin(ReallyAllOpenGradlePlugin::class.java)
 
     // Needs to match the key for CommandLineProcessor.pluginId
-    override fun getCompilerPluginId(): String = artifactId
+    override fun getCompilerPluginId(): String = "$groupId.$artifactId"
 
     override fun getPluginArtifact(): SubpluginArtifact = SubpluginArtifact(
             groupId = groupId,
@@ -99,7 +99,8 @@ class ReallyAllOpenExtension : DeclarationAttributeAltererExtension {
 @AutoService(CommandLineProcessor::class)
 class ReallyAllOpenCommandLineProcessor : CommandLineProcessor {
 
-    override val pluginId: String = artifactId
+    // Needs to match KotlinGradleSubplugin#getCompilerPluginId
+    override val pluginId: String = "$groupId.$artifactId"
 
     override val pluginOptions: Collection<CliOption> = listOf(
             CliOption(

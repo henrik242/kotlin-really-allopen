@@ -47,7 +47,7 @@ class FunctionalPluginTest extends Specification {
                 kotlin("jvm") version "$kotlinVersion"
                 groovy
             }
-            apply(plugin = "kotlin-really-allopen")
+            apply(plugin = "no.synth.kotlin.plugins.kotlin-really-allopen")
             
             repositories {
                 mavenLocal()
@@ -83,7 +83,7 @@ class FunctionalPluginTest extends Specification {
              plugins {
                  kotlin("jvm") version "$kotlinVersion"
                  groovy
-                 id("kotlin-really-allopen") version "$pluginVersion"
+                 id("no.synth.kotlin.plugins.kotlin-really-allopen") version "$pluginVersion"
              }
              repositories {
                  mavenLocal()
