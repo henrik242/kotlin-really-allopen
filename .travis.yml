@@ -1,3 +1,3 @@
 language: java
 
-script: ./gradlew :plugin:build :plugin:publishToMavenLocal :example:build
+script: ./gradlew :kotlin-really-allopen:build :kotlin-really-allopen:publishToMavenLocal :example:build
