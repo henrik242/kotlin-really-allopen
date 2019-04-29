@@ -1,5 +1,6 @@
 package no.synth.kotlin.plugins.reallyallopen
 
+import groovy.util.slurpersupport.GPathResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Rule
@@ -17,12 +18,18 @@ class FunctionalPluginTest extends Specification {
     File buildFile
     File testFile
     File classFile
+    File testResult
 
     def setup() {
         settingsFile = testProjectDir.newFile('settings.gradle.kts')
         buildFile = testProjectDir.newFile('build.gradle.kts')
         testFile = new File(testProjectDir.newFolder('src', 'test', 'groovy'), 'PluginTest.groovy')
         classFile = new File(testProjectDir.newFolder('src', 'main', 'kotlin'), 'SomeFinalClass.kt')
+        testResult = new File(testProjectDir.root, "build/test-results/test/TEST-PluginTest.xml")
+    }
+
+    def cleanup() {
+        testResult.delete()
     }
 
     def 'should include plugin via buildscript classpath'() {
@@ -52,13 +59,8 @@ class FunctionalPluginTest extends Specification {
         classFile << someFinalClass
 
       when:
-        def result = GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
-                .withArguments("build")
-                .build()
-
-        def testResult = new File(testProjectDir.root, "build/test-results/test/TEST-PluginTest.xml")
-        def xml = new XmlSlurper().parse(testResult)
+        def result = runGradle().build()
+        def xml = testResults()
 
       then:
         result.task(":test").outcome == TaskOutcome.SUCCESS
@@ -93,13 +95,8 @@ class FunctionalPluginTest extends Specification {
         classFile << someFinalClass
 
       when:
-        def result = GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
-                .withArguments("build")
-                .build()
-
-        def testResult = new File(testProjectDir.root, "build/test-results/test/TEST-PluginTest.xml")
-        def xml = new XmlSlurper().parse(testResult)
+        def result = runGradle().build()
+        def xml = testResults()
 
       then:
         result.task(":test").outcome == TaskOutcome.SUCCESS
@@ -132,13 +129,8 @@ class FunctionalPluginTest extends Specification {
         classFile << someFinalClass
 
       when:
-        def result = GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
-                .withArguments("build")
-                .buildAndFail()
-
-        def testResult = new File(testProjectDir.root, "build/test-results/test/TEST-PluginTest.xml")
-        def xml = new XmlSlurper().parse(testResult)
+        def result = runGradle().buildAndFail()
+        def xml = testResults()
 
       then:
         result.task(":test").outcome == TaskOutcome.FAILED
@@ -175,19 +167,22 @@ class FunctionalPluginTest extends Specification {
         classFile << someAnnotatedClass
 
       when:
-        def result = GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
-                .withArguments("build")
-                .build()
-
-        def testResult = new File(testProjectDir.root, "build/test-results/test/TEST-PluginTest.xml")
-        def xml = new XmlSlurper().parse(testResult)
+        def result = runGradle().build()
+        def xml = testResults()
 
       then:
         result.task(":test").outcome == TaskOutcome.SUCCESS
         xml.@tests == 2
         xml.@failures == 0
         xml.@errors == 0
+    }
+
+    GradleRunner runGradle() {
+        return GradleRunner.create().withProjectDir(testProjectDir.root).withArguments("build")
+    }
+
+    GPathResult testResults() {
+        return new XmlSlurper().parse(testResult)
     }
 
     static dependencies = """
