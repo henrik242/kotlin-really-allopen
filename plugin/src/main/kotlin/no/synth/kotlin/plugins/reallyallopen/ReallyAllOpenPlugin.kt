@@ -25,10 +25,7 @@ import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 import org.jetbrains.kotlin.lexer.KtTokens.FINAL_KEYWORD
 import org.jetbrains.kotlin.psi.KtModifierListOwner
 import org.jetbrains.kotlin.resolve.BindingContext
-
-const val groupId = "no.synth.kotlin.plugins"
-const val artifactId = "kotlin-really-allopen"
-const val version = "0.1-SNAPSHOT"
+import java.util.*
 
 open class ReallyAllOpenGradlePlugin : Plugin<Project> {
 
@@ -123,3 +120,11 @@ class ReallyAllOpenCommandLineProcessor : CommandLineProcessor {
         val KEY_ENABLED = CompilerConfigurationKey<Boolean>("whether the plugin is enabled")
     }
 }
+
+private val buildInfo = Properties().apply {
+    load(object {}.javaClass.getResourceAsStream("/build.properties"))
+}
+val groupId = buildInfo.getProperty("groupId")
+val artifactId = buildInfo.getProperty("artifactId")
+val version = buildInfo.getProperty("version")
+
