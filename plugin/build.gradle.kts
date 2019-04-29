@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "no.synth.kotlin.plugins"
-version = "0.1-SNAPSHOT"
+version = "0.1"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
