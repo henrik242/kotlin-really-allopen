@@ -22,10 +22,6 @@ dependencies {
     kapt("com.google.auto.service:auto-service:1.0-rc5")
 }
 
-val jar by tasks.getting(Jar::class) {
-    baseName = artifactName
-}
-
 gradlePlugin {
     plugins {
         create(artifactName) {
@@ -38,8 +34,6 @@ gradlePlugin {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            artifactId = artifactName
-
             from(components["java"])
         }
     }

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":plugin"))
+    implementation(project(":kotlin-really-allopen"))
 
     testImplementation(gradleTestKit())
     testImplementation("net.bytebuddy:byte-buddy:1.9.12")
