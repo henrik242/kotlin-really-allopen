@@ -32,6 +32,13 @@ class FunctionalPluginTest extends Specification {
         testResult.delete()
     }
 
+    def 'plugin version should be real'() {
+      expect:
+        pluginVersion != null
+        pluginVersion.size() >= 3
+        pluginVersion.contains('.')
+    }
+
     def 'should include plugin via buildscript classpath'() {
       given:
         buildFile << """
