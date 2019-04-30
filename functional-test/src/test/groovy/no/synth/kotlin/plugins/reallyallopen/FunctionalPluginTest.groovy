@@ -185,7 +185,7 @@ class FunctionalPluginTest extends Specification {
     }
 
     GradleRunner runGradle() {
-        return GradleRunner.create().withProjectDir(testProjectDir.root).withArguments("build")
+        return GradleRunner.create().withDebug(true).withProjectDir(testProjectDir.root).withArguments("build", "-i")
     }
 
     GPathResult testResults() {
