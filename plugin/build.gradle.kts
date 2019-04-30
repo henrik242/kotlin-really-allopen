@@ -19,6 +19,9 @@ dependencies {
 
     implementation("com.google.auto.service:auto-service:1.0-rc5")
     kapt("com.google.auto.service:auto-service:1.0-rc5")
+
+    implementation("org.apache.logging.log4j:log4j-api:2.11.2")
+    implementation("org.apache.logging.log4j:log4j-core:2.11.2")
 }
 
 gradlePlugin {

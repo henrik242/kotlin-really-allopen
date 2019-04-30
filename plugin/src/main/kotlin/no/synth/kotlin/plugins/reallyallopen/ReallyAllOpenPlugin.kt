@@ -1,6 +1,7 @@
 package no.synth.kotlin.plugins.reallyallopen
 
 import com.google.auto.service.AutoService
+import org.apache.logging.log4j.LogManager
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.AbstractCompile
@@ -88,15 +89,22 @@ class ReallyAllOpenExtension : DeclarationAttributeAltererExtension {
             currentModality: Modality,
             bindingContext: BindingContext,
             isImplicitModality: Boolean
-    ): Modality? =
+    ): Modality? {
 
-            if (currentModality != FINAL) {
-                null
-            } else if (!isImplicitModality && modifierListOwner.hasModifier(FINAL_KEYWORD)) {
-                FINAL // Explicit final
-            } else {
-                OPEN
-            }
+        log.error("Hello?")
+
+        return if (currentModality != FINAL) {
+            null
+        } else if (!isImplicitModality && modifierListOwner.hasModifier(FINAL_KEYWORD)) {
+            FINAL // Explicit final
+        } else {
+            OPEN
+        }
+    }
+
+    companion object {
+        val log = LogManager.getLogger(ReallyAllOpenExtension::class.java)
+    }
 }
 
 @AutoService(CommandLineProcessor::class)
