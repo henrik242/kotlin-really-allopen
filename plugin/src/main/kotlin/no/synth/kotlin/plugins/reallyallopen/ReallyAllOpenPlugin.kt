@@ -94,7 +94,7 @@ class ReallyAllOpenExtension : DeclarationAttributeAltererExtension {
 
             if (currentModality != FINAL ||
                     (modifierListOwner !is KtClass && modifierListOwner !is KtNamedFunction) ||
-                    containingDeclaration?.name?.identifier == "Companion") {
+                    containingDeclaration.toString() == "Companion") {
                 null
             } else if (!isImplicitModality && modifierListOwner.hasModifier(FINAL_KEYWORD)) {
                 FINAL // Explicit final
