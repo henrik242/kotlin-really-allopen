@@ -1,4 +1,4 @@
-package no.synth.kotlin.plugins.reallyallopen
+package no.synth.reallyallopen
 
 import com.google.auto.service.AutoService
 import org.gradle.api.Plugin
@@ -28,7 +28,7 @@ import org.jetbrains.kotlin.psi.KtModifierListOwner
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.resolve.BindingContext
 
-const val groupId = "no.synth.kotlin.plugins"
+const val groupId = "no.synth"
 const val artifactId = "kotlin-really-allopen"
 const val version = "0.3-SNAPSHOT" // Remember to set version in build.gradle.kts as well
 

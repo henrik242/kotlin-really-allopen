@@ -1,4 +1,4 @@
-package no.synth.kotlin.plugins.reallyallopen
+package no.synth.reallyallopen
 
 import groovy.util.slurpersupport.GPathResult
 import org.gradle.testkit.runner.GradleRunner
@@ -47,14 +47,14 @@ class FunctionalPluginTest extends Specification {
                     mavenLocal()
                 }
                 dependencies {
-                    classpath("no.synth.kotlin.plugins:kotlin-really-allopen:$pluginVersion")
+                    classpath("no.synth:kotlin-really-allopen:$pluginVersion")
                 }
             }
             plugins {
                 kotlin("jvm") version "$kotlinVersion"
                 groovy
             }
-            apply(plugin = "no.synth.kotlin.plugins.kotlin-really-allopen")
+            apply(plugin = "no.synth.kotlin-really-allopen")
             
             repositories {
                 mavenLocal()
@@ -90,7 +90,7 @@ class FunctionalPluginTest extends Specification {
              plugins {
                  kotlin("jvm") version "$kotlinVersion"
                  groovy
-                 id("no.synth.kotlin.plugins.kotlin-really-allopen") version "$pluginVersion"
+                 id("no.synth.kotlin-really-allopen") version "$pluginVersion"
              }
              repositories {
                  mavenLocal()

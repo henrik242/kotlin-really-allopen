@@ -8,7 +8,7 @@ plugins {
     `java-gradle-plugin`
 }
 
-group = "no.synth.kotlin.plugins"
+group = "no.synth"
 version = "0.3-SNAPSHOT" // Remember to set version in ReallyAllOpenPlugin.kt as well
 
 dependencies {
@@ -27,7 +27,7 @@ gradlePlugin {
             displayName = "Kotlin Really All Open compiler plugin"
             description = "Removes final restriction from all Kotlin classes"
             id = "${project.group}.${project.name}"
-            implementationClass = "no.synth.kotlin.plugins.reallyallopen.ReallyAllOpenGradlePlugin"
+            implementationClass = "no.synth.reallyallopen.ReallyAllOpenGradlePlugin"
         }
     }
 }
