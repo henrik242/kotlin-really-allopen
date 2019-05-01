@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "no.synth.kotlin.plugins"
-version = "0.2"
+version = "0.3-SNAPSHOT" // Remember to set version in ReallyAllOpenPlugin.kt as well
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
