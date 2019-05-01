@@ -11,7 +11,7 @@ in that you don't have to specify which classes to open up.
 Building
 --------
 
-`./gradlew :plugin:build`
+`./gradlew build`
 
 Testing
 -------
