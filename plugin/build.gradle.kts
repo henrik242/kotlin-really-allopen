@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "no.synth"
-version = "0.3" // Remember to set version in ReallyAllOpenPlugin.kt as well
+version = "0.4-SNAPSHOT" // Remember to set version in ReallyAllOpenPlugin.kt as well
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
