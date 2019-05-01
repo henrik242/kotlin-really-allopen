@@ -235,6 +235,8 @@ class FunctionalPluginTest extends Specification {
             
             fun someFinalMethod() = "some final method"
             
+            fun someFinalMethodWithAnonStuff() = "cheese".let { it == "doodles" }
+            
             companion object {
                 const val someConstVal = "some object const val"
                 val someVal = "some object val"

@@ -26,7 +26,12 @@ import org.jetbrains.kotlin.lexer.KtTokens.FINAL_KEYWORD
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtModifierListOwner
 import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.psi.psiUtil.containingClass
 import org.jetbrains.kotlin.resolve.BindingContext
+import java.io.File
+
+//import org.slf4j.LoggerFactory
+
 
 const val groupId = "no.synth.kotlin.plugins"
 const val artifactId = "kotlin-really-allopen"
@@ -90,17 +95,29 @@ class ReallyAllOpenExtension : DeclarationAttributeAltererExtension {
             currentModality: Modality,
             bindingContext: BindingContext,
             isImplicitModality: Boolean
-    ): Modality? =
+    ): Modality? {
 
-            if (currentModality != FINAL ||
-                    (modifierListOwner !is KtClass && modifierListOwner !is KtNamedFunction) ||
-                    containingDeclaration?.name?.identifier == "Companion") {
-                null
-            } else if (!isImplicitModality && modifierListOwner.hasModifier(FINAL_KEYWORD)) {
-                FINAL // Explicit final
-            } else {
-                OPEN
-            }
+        val log = File("/tmp/kotlin-${System.currentTimeMillis()}").apply {
+            writeText("""
+                $declaration $containingDeclaration ${containingDeclaration?.name?.identifier}
+                $currentModality ${modifierListOwner.javaClass} ${modifierListOwner.psiOrParent} ${modifierListOwner.psiOrParent.containingClass()?.name} ${modifierListOwner.name}
+                ${modifierListOwner.text}
+
+            """.trimIndent())
+        }
+        return if (currentModality != FINAL ||
+                (modifierListOwner !is KtClass && modifierListOwner !is KtNamedFunction) ||
+                containingDeclaration?.name?.identifier == "Companion") {
+            log.appendText("null")
+            null
+        } else if (!isImplicitModality && modifierListOwner.hasModifier(FINAL_KEYWORD)) {
+            log.appendText("final")
+            FINAL // Explicit final
+        } else {
+            log.appendText("open")
+            OPEN
+        }
+    }
 }
 
 @AutoService(CommandLineProcessor::class)
