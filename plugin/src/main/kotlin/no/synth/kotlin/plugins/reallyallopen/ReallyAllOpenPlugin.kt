@@ -30,7 +30,7 @@ import org.jetbrains.kotlin.resolve.BindingContext
 
 const val groupId = "no.synth.kotlin.plugins"
 const val artifactId = "kotlin-really-allopen"
-const val version = "0.2-SNAPSHOT"
+const val version = "0.2"
 
 open class ReallyAllOpenGradlePlugin : Plugin<Project> {
 
