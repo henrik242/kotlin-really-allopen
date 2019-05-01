@@ -225,9 +225,26 @@ class FunctionalPluginTest extends Specification {
         }
     """
 
-    static someFinalClass = """        
+    static someFinalClass = """
+        const val someConstVal = "some const val"
+        val someVal = "some val"
+        
         class SomeFinalClass {
-            fun someFinalMethod() = "cheese"
+            val someVal = "some val"
+            var someVar = "some var"
+            
+            fun someFinalMethod() = "some final method"
+            
+            companion object {
+                const val someConstVal = "some object const val"
+                val someVal = "some object val"
+                
+                fun someStaticMethod() = "some static method"
+            }
+        }
+        
+        object SomeObject {
+            val someObjectVal = "some object val"
         }
     """
 
@@ -236,7 +253,7 @@ class FunctionalPluginTest extends Specification {
         
         @OpenItUp
         class SomeFinalClass {
-            fun someFinalMethod() = "cheese"
+            fun someFinalMethod() = "some final method"
         }
     """
 

@@ -23,7 +23,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinGradleSubplugin
 import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 import org.jetbrains.kotlin.lexer.KtTokens.FINAL_KEYWORD
+import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtModifierListOwner
+import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.resolve.BindingContext
 
 const val groupId = "no.synth.kotlin.plugins"
@@ -90,7 +92,9 @@ class ReallyAllOpenExtension : DeclarationAttributeAltererExtension {
             isImplicitModality: Boolean
     ): Modality? =
 
-            if (currentModality != FINAL) {
+            if (currentModality != FINAL ||
+                    (modifierListOwner !is KtClass && modifierListOwner !is KtNamedFunction) ||
+                    containingDeclaration?.name?.identifier == "Companion") {
                 null
             } else if (!isImplicitModality && modifierListOwner.hasModifier(FINAL_KEYWORD)) {
                 FINAL // Explicit final
