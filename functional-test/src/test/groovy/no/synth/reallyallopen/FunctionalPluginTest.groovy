@@ -278,7 +278,19 @@ class FunctionalPluginTest extends Specification {
         
         @OpenItUp
         class SomeFinalClass {
+            val someVal = "some val"
+            var someVar = "some var"
+            
             fun someFinalMethod() = "some final method"
+            
+            companion object {
+                fun someStaticMethod() = "some static method"
+            }
+        }
+        
+        @OpenItUp
+        data class SomeDataClass(val cheese: String) {
+            fun fetchCheese() = cheese
         }
     """
 
