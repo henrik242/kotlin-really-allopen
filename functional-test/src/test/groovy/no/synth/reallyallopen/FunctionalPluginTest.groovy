@@ -13,6 +13,7 @@ class FunctionalPluginTest extends Specification {
 
     static kotlinVersion = "1.3.31"
     static pluginVersion = ReallyAllOpenPluginKt.version
+    static numTests = 3
 
     File settingsFile
     File buildFile
@@ -71,7 +72,7 @@ class FunctionalPluginTest extends Specification {
 
       then:
         result.task(":test").outcome == TaskOutcome.SUCCESS
-        xml.@tests == 2
+        xml.@tests == numTests
         xml.@failures == 0
         xml.@errors == 0
     }
@@ -107,7 +108,7 @@ class FunctionalPluginTest extends Specification {
 
       then:
         result.task(":test").outcome == TaskOutcome.SUCCESS
-        xml.@tests == 2
+        xml.@tests == numTests
         xml.@failures == 0
         xml.@errors == 0
     }
@@ -141,8 +142,8 @@ class FunctionalPluginTest extends Specification {
 
       then:
         result.task(":test").outcome == TaskOutcome.FAILED
-        xml.@tests == 2
-        xml.@failures == 2
+        xml.@tests == numTests
+        xml.@failures == numTests
         xml.@errors == 0
     }
 
@@ -179,7 +180,7 @@ class FunctionalPluginTest extends Specification {
 
       then:
         result.task(":test").outcome == TaskOutcome.SUCCESS
-        xml.@tests == 2
+        xml.@tests == numTests
         xml.@failures == 0
         xml.@errors == 0
     }
@@ -203,6 +204,7 @@ class FunctionalPluginTest extends Specification {
     static pluginTest = """        
         import org.spockframework.mock.CannotCreateMockException
         import spock.lang.Specification
+        import java.lang.reflect.Modifier
         
         class PluginTest extends Specification {
         
@@ -221,6 +223,25 @@ class FunctionalPluginTest extends Specification {
         
               then:
                 mockedClass.someFinalMethod() == "mock cheese"
+            }
+            
+            def "should have expected finality"() {
+              when:
+                def someClass = new SomeFinalClass().getClass()
+                def someCompanion = new SomeFinalClass.Companion().getClass()
+                def someDataClass = new SomeDataClass("chevre").getClass()
+              then:
+                !isFinal(someClass)
+                isFinal(someClass.getDeclaredField("someVal"))
+                !isFinal(someClass.getDeclaredField("someVar"))
+                !isFinal(someClass.getDeclaredMethod("someFinalMethod"))
+                //isFinal(someCompanion.getDeclaredMethod("someStaticMethod"))
+                !isFinal(someDataClass)
+                !isFinal(someDataClass.getDeclaredMethod("fetchCheese"))
+            }
+            
+            static isFinal(declared) {
+               return Modifier.isFinal(declared.getModifiers())
             }
         }
     """
@@ -241,6 +262,10 @@ class FunctionalPluginTest extends Specification {
                 
                 fun someStaticMethod() = "some static method"
             }
+        }
+        
+        data class SomeDataClass(val cheese: String) {
+            fun fetchCheese() = cheese
         }
         
         object SomeObject {
