@@ -15,7 +15,7 @@ Add [the usual plugin definition](https://plugins.gradle.org/plugin/no.synth.kot
  `build.gradle`:
 ````
 plugins {
-  id "no.synth.kotlin-really-allopen" version "0.3"
+  id "no.synth.kotlin-really-allopen" version "0.4"
 }
 ````
 For [reasons still unknown](https://github.com/henrik242/kotlin-really-allopen/issues/16) you need to add 
